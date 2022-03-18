@@ -1,0 +1,24 @@
+.box {
+  max-width: 25rem;
+  margin: 1rem auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+  justify-items: center;
+  align-items: center;
+  padding: 2rem 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+  overflow-y: scroll;
+  max-height: 50vh;
+}
+
+.word {
+  width: 20rem;
+  background-color: #ab8476;
+  padding: 0.5rem 1.5rem;
+  color: #fff;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}

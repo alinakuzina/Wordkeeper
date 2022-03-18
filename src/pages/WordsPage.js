@@ -1,5 +1,4 @@
-import logo from "./logo.svg";
-import classes from "./App.module.css";
+import classes from "../App.module.css";
 import React, {
   useEffect,
   useState,
@@ -7,64 +6,45 @@ import React, {
   useCallback,
   useContext,
 } from "react";
+import Add from "../content/WordPage/Add";
+import Words from "../content/WordPage/Words";
+import AuthContext from "../store/auth-context";
 
-import Layout from "./content/Navigation/Layout";
-import { Switch, Route, Redirect, Router } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import WordsPage from "./pages/WordsPage";
-import LoginPage from "./pages/Login";
-import AuthContext from "./store/auth-context";
-import { AnimatedSwitch } from "react-router-transition";
-
-const App = () => {
-  const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
-
-  return (
-    <Layout>
-      <AnimatedSwitch
-        atEnter={{ opacity: 0 }}
-        atLeave={{ opacity: 0 }}
-        atActive={{ opacity: 1 }}
-        className={classes.switch}
-      >
-        {" "}
-        <Route path="/" exact>
-          <HomePage />
-        </Route>
-        {isLoggedIn && (
-          <Route path="/my-words">
-            <WordsPage />
-          </Route>
-        )}
-        {!isLoggedIn && (
-          <Route path="/autorisation">
-            <LoginPage />
-          </Route>
-        )}
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </AnimatedSwitch>
-    </Layout>
-  );
-};
-export default App;
-
-/*
-function App() {
+const WordsPage = () => {
   const [words, setWords] = useState([]);
   const wordRef = useRef("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [uniqueWord, setUnoqueWord] = useState(true);
+  const authCtx = useContext(AuthContext);
+
+  const isLoggedIn = authCtx.isLoggedIn;
+
+  const leaveLetters = (recieveWord) => {
+    let newWord = "";
+    let word = recieveWord.split("");
+    console.log(word);
+
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] === "." || word[i] === "@") {
+        newWord += "-";
+      } else {
+        newWord += word[i];
+      }
+    }
+    console.log(newWord);
+    return newWord;
+  };
+
+  const currentEmail = leaveLetters(authCtx.email);
 
   const fetchWordsHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
+    console.log(currentEmail);
     try {
       const response = await fetch(
-        "https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/words.json"
+        `https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/${currentEmail}.json`
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -91,7 +71,7 @@ function App() {
 
   const addWordToBase = async function (word) {
     const checkIfWordIsUnique = await fetch(
-      "https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/words.json"
+      `https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/${currentEmail}.json`
     );
 
     const data = await checkIfWordIsUnique.json();
@@ -106,7 +86,7 @@ function App() {
 
     if (unique === true) {
       const response = await fetch(
-        "https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/words.json",
+        `https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/${currentEmail}.json`,
         {
           method: "POST",
           body: JSON.stringify(word),
@@ -138,12 +118,14 @@ function App() {
   };
 
   useEffect(() => {
-    fetchWordsHandler();
-  }, [fetchWordsHandler]);
+    if (isLoggedIn) {
+      fetchWordsHandler();
+    }
+  }, [fetchWordsHandler, isLoggedIn]);
 
   const deleteWord = async (id) => {
     const response = await fetch(
-      `https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/words/${id}/.json`,
+      `https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/${currentEmail}/${id}/.json`,
       {
         method: "DELETE",
       }
@@ -156,7 +138,7 @@ function App() {
 
   const changeWord = async function (newWord, id) {
     const response = await fetch(
-      `https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/words/${id}/.json`,
+      `https://words-4bd2d-default-rtdb.europe-west1.firebasedatabase.app/${currentEmail}/${id}/.json`,
       {
         method: "PUT",
         body: JSON.stringify({ word: `${newWord}` }),
@@ -171,7 +153,6 @@ function App() {
 
   return (
     <React.Fragment>
-      <MainNavigation />
       <Add submitHandler={submitHandler} wordRef={wordRef} />
       {!uniqueWord && (
         <div className={classes.error}>Already have this word</div>
@@ -184,7 +165,6 @@ function App() {
       />
     </React.Fragment>
   );
-}
+};
 
-export default App;
-*/
+export default WordsPage;

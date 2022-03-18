@@ -1,0 +1,61 @@
+.word {
+  width: 20rem;
+  display: grid;
+  grid-template-columns: 4fr 1fr 1fr;
+  align-items: start;
+  background-color: #ab8476;
+  padding: 0.5rem 1.5rem;
+  color: #fff;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  gap: 3px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  word-break: break-all;
+}
+
+.svg {
+  background-color: #ab8476;
+  border: 1px solid #fff;
+  color: #fff;
+  border-radius: 0.5rem;
+  min-width: 5rem;
+  padding: 0.1rem 0.1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn {
+  background-color: #523f38f1;
+  color: #fff;
+  border-radius: 0.5rem;
+  min-width: 5rem;
+  padding: 0.1rem 0.1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.input {
+  background-color: #bd9384;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.3rem 1rem;
+  color: #fff;
+  max-width: 12rem;
+}
+
+.change {
+  max-width: 20rem;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  background-color: #ab8476;
+  padding: 0.5rem 1.5rem;
+  color: #fff;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+svg {
+  max-height: 18px;
+  max-width: 18px;
+}
