@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import classes from "./Words.module.css";
 import Word from "./Word";
-
+import { motion } from "framer-motion";
 const Words = (props) => {
   const [openEdit, setOpenEdit] = useState(false);
 

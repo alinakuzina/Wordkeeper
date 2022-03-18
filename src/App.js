@@ -14,7 +14,8 @@ import HomePage from "./pages/HomePage";
 import WordsPage from "./pages/WordsPage";
 import LoginPage from "./pages/Login";
 import AuthContext from "./store/auth-context";
-import { AnimatedSwitch } from "react-router-transition";
+
+import { AnimatePresence, motion } from "framer-motion";
 
 const App = () => {
   const authCtx = useContext(AuthContext);
@@ -22,30 +23,26 @@ const App = () => {
 
   return (
     <Layout>
-      <AnimatedSwitch
-        atEnter={{ opacity: 0 }}
-        atLeave={{ opacity: 0 }}
-        atActive={{ opacity: 1 }}
-        className={classes.switch}
-      >
-        {" "}
-        <Route path="/" exact>
-          <HomePage />
-        </Route>
-        {isLoggedIn && (
-          <Route path="/my-words">
-            <WordsPage />
+      <AnimatePresence exitBeforeEnter>
+        <Switch>
+          <Route path="/" exact>
+            <HomePage />
           </Route>
-        )}
-        {!isLoggedIn && (
-          <Route path="/autorisation">
-            <LoginPage />
+          {isLoggedIn && (
+            <Route path="/my-words">
+              <WordsPage />
+            </Route>
+          )}
+          {!isLoggedIn && (
+            <Route path="/autorisation">
+              <LoginPage />
+            </Route>
+          )}
+          <Route path="*">
+            <Redirect to="/" />
           </Route>
-        )}
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </AnimatedSwitch>
+        </Switch>
+      </AnimatePresence>
     </Layout>
   );
 };

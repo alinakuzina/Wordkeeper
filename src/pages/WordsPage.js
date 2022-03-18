@@ -9,6 +9,7 @@ import React, {
 import Add from "../content/WordPage/Add";
 import Words from "../content/WordPage/Words";
 import AuthContext from "../store/auth-context";
+import { motion } from "framer-motion";
 
 const WordsPage = () => {
   const [words, setWords] = useState([]);
@@ -152,7 +153,11 @@ const WordsPage = () => {
   };
 
   return (
-    <React.Fragment>
+    <motion.div
+      exit={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+    >
       <Add submitHandler={submitHandler} wordRef={wordRef} />
       {!uniqueWord && (
         <div className={classes.error}>Already have this word</div>
@@ -163,7 +168,7 @@ const WordsPage = () => {
         words={words}
         changeWord={changeWord}
       />
-    </React.Fragment>
+    </motion.div>
   );
 };
 
